@@ -1,149 +1,134 @@
-/* General Body Styling */
+/* General Body Styling - full-height and flex management */
 body {
-    font-family: 'Segoe UI';
-    background-color: #F2F3F3;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #1E1E1EFF;
+    /* background-image: url("../image/background2.webp"); */
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+    align-items: stretch;
+    height: 100vh;
+    overflow-x: hidden;
+    position: relative; /* Allow for overlay positioning */
 }
 
+/* Add background overlay for better readability */
+/* body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+} */
 
-/* Logo Container */
-.logo-container {
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
-    padding: 10px 0px;
-}
-
-/* Logo */
-.logo {
-    width: 150px;
-    height: auto;
-    margin-right: 20px;
-}
-
-/* Style for the question buttons */
-.question-buttons {
-    display: flex;
-    gap: 15px;
-}
-
-.question-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.question-button:hover {
-    background-color: #45a049;
-}
-
-/* Button Container */
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.icon-button {
-    background-color: #6200EA;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-}
-
-.icon-button:hover {
-    background-color: #3700B3;
-}
-
-.icon-button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* Main Layout Container */
-.main-container {
-    display: flex;
-    justify-content: space-between; /* Distribute space between avatar and chat */
-    align-items: flex-start;
-    gap: 20px; /* Space between avatar and chat area */
-    margin-top: 20px;
-    width: 100%;
-    max-width: 1400px;
-}
-
-/* Video Container for Avatar */
-#videoContainer {
-    background-color: #FFFFFF;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    height: 600px; /* Increased height */
-    width: 100%;
+/* Responsive full-height avatar block */
+.avatar-block {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    width: 100%; /* Takes the full width of its container */
+    max-width: 1200px; /* Maximum width for larger screens */
+    margin: auto; /* Centers the block horizontally */
+    overflow: hidden; /* Ensures no overflow of content */
+    padding: 20px;
+    position: relative; /* Position relative for flexible positioning */
+}
+
+#remoteVideo {
+    width: 100%;
+    max-width: 1600px; /* Increase max width to make the avatar bigger */
+    height: auto;
+    margin: auto;
+    padding: 20px;
+    min-height: 600px; /* Set a minimum height to enlarge the video area */
 }
 
 #remoteVideo video {
     width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures the video fills the container while maintaining aspect ratio */
+    max-height: 90vh; /* Keep the video responsive while enlarging it */
+    /* border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); */
+}
+
+/* Adjust canvas for full responsiveness */
+canvas {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100%;
     object-fit: contain;
-    height: 100%;
-    max-height: 500px; /* Max height for avatar */
 }
 
-/* Chat History Styling */
-#chatHistory {
-    background-color: #FFFFFF;
-    font-family: 'Segoe UI';
-    border: 1px solid #D7D7DF;
-    padding: 10px;
-    font-size: 1rem;
-    color: #222222;
-    border-radius: 5px;
-    height: 480px; /* Height for chat history */
-    overflow-y: auto; /* Make it scrollable */
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .icon-button {
+        padding: 10px;
+        font-size: 16px;
+    }
+    .avatar-block {
+        padding: 10px;
+    }
+}
+
+/* Fixed position for the record card with control buttons */
+.record-card {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    max-width: 100%;
+    padding: 10px;
+    z-index: 100; /* Keeps it on top of other content */
+    background: rgba(255, 255, 255, 0.1); /* Increased transparency for more glassy effect */
+    backdrop-filter: blur(10px); /* Increased blur for frosted glass look */
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.4); /* Enhanced shadow for depth */
 }
 
-/* Right Side Chat and Input Container */
-.chat-container {
+/* Flex settings for button alignment */
+.button-container {
     display: flex;
-    flex-direction: column;
-    max-width: 30%;
-    width: 100%;
+    justify-content: center;
+    gap: 12px;
 }
 
-/* Type Message Box */
-#userMessageBox {
-    font-size: 1rem;
-    font-family: 'Segoe UI';
-    padding: 10px;
-    width: 100%;
-    border-radius: 5px;
-    border: 1px solid #D7D7DF;
-    margin-top: 10px;
+/* Style adjustments for icons and buttons */
+.icon-button {
+    background-color: #6200EA;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2; /* Ensures buttons stay on top */
 }
 
-/* Hide Latency Logs */
-#latencyLog {
-    display: none;
+/* Button hover effect */
+.icon-button:hover {
+    background-color: #3700B3;
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Disabled button styling */
+.icon-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Hidden elements */
+.hidden {
+    display: none !important;
 }
