@@ -17,6 +17,11 @@
 </head>
 <body>
 
+<!-- Chat Bubble Icon to toggle chat visibility -->
+<div id="chat-bubble-icon" onclick="toggleChat()">
+    <i class="fas fa-comment-dots"></i>
+</div>
+
 <!-- Logo and Questions Buttons -->
 <div class="logo-container">
   <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Logo" class="logo">
@@ -68,8 +73,8 @@
     </div>
   </div>
 
-  <!-- Chat History and Message Box (Right Side) -->
-  <div class="chat-container">
+  <!-- Chat History and Message Box (Initially Hidden) -->
+  <div id="chat-box" class="chat-container" style="display: none;">
     <!-- Overlay for chat history -->
     <textarea id="chatHistory"></textarea>
     <!-- Overlay for latency logs; -->
@@ -82,3 +87,75 @@
     <textarea id="userMessageBox" rows="3" placeholder="Type a message..."></textarea>
   </div>
 </div>
+
+<!-- JavaScript for Toggle and Sending Messages -->
+<script>
+    // Toggle the chat dialog visibility
+    function toggleChat() {
+        const chatBox = document.getElementById("chat-box");
+        chatBox.style.display = chatBox.style.display === "none" ? "block" : "none";
+    }
+</script>
+
+<!-- CSS Styling -->
+<style>
+    /* Chat Bubble Icon Styling */
+    #chat-bubble-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #28a745;
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        line-height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1000; /* Ensure it’s on top */
+    }
+
+    /* Chat Box Styling for Overlapping Dialog */
+    #chat-box {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        max-height: 400px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        flex-direction: column;
+        z-index: 999; /* Above the main container */
+    }
+
+    #chatHistory {
+        flex-grow: 1;
+        padding: 10px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ddd;
+        height: 200px; /* Adjusted height to fit within the box */
+    }
+
+    #latencyLog {
+        display: none; /* Hidden latency log */
+    }
+
+    #showTypeMessageCheckbox {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #userMessageBox {
+        padding: 10px;
+        width: 100%;
+        border: none;
+        resize: none;
+        border-top: 1px solid #ddd;
+        outline: none; /* Remove blue outline on focus */
+    }
+</style>
+</body>
+</html>
