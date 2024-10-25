@@ -533,6 +533,11 @@ window.microphone = () => {
         })
 }
 
+window.toggleChat = () => {
+    const chatBox = document.getElementById("chat-box");
+    chatBox.style.display = chatBox.style.display === "none" ? "block" : "none";
+}
+
 window.updateTypeMessageBox = () => {
     if (document.getElementById('showTypeMessage').checked) {
         document.getElementById('userMessageBox').hidden = false

@@ -91,10 +91,20 @@ canvas {
 }
 
 /* Flex settings for button alignment */
-.button-container {
+/* .button-container {
     display: flex;
     justify-content: center;
     gap: 12px;
+} */
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Centers buttons horizontally */
+    align-items: center; /* Vertically aligns buttons */
+    gap: 15px; /* Space between buttons */
+    flex-wrap: nowrap; /* Prevents buttons from wrapping to a new line */
+    width: 100%; /* Ensure container takes up full width */
+    overflow: hidden; /* Hides overflow if container is too small */
 }
 
 /* Style adjustments for icons and buttons */
@@ -128,7 +138,88 @@ canvas {
     box-shadow: none;
 }
 
+#latencyLog {
+    display: none; /* Hidden latency log */
+}
+
 /* Hidden elements */
 .hidden {
     display: none !important;
+}
+
+/* Chat Box Styling for Overlapping Dialog */
+#chat-box {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    height: 400px; /* Fixed height */
+    background-color: #1E1E1E; /* Darker background for dark mode */
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow for dark mode */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 999; /* Above the main container */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle light border */
+}
+
+/* Chat History Styling - Fixed size and scrollable */
+#chatHistory {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border for dark mode */
+    height: 250px; /* Fixed height */
+    width: 300px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #E0E0E0; /* Light text for readability on dark background */
+    background-color: #2C2C2C; /* Dark background for chat messages */
+    scrollbar-width: thin; /* Slim scrollbar for better appearance */
+    resize: none; /* Prevent resizing */
+}
+
+/* Scrollbar Styling for Chat History */
+#chatHistory::-webkit-scrollbar {
+    width: 8px; /* Slim scrollbar */
+}
+
+#chatHistory::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar thumb color for dark mode */
+    border-radius: 5px;
+}
+
+#chatHistory::-webkit-scrollbar-track {
+    background-color: #2C2C2C; /* Track matches background */
+}
+
+/* Checkbox Container */
+#showTypeMessageCheckbox {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #1E1E1E; /* Matches the dark background */
+    color: #E0E0E0; /* Light text color */
+}
+
+/* User Message Box Styling - Matches dark mode */
+#userMessageBox {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    resize: none; /* Prevent resizing */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #E0E0E0; /* Light text for better readability */
+    background-color: #2C2C2C; /* Dark background for input box */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); /* Inner shadow for input */
+    border-radius: 0 0 10px 10px; /* Smooth bottom corners */
+}
+
+/* Optional hover effect for input area */
+#userMessageBox:focus {
+    background-color: #333; /* Slightly brighter on focus */
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.2); /* Light purple glow */
 }
