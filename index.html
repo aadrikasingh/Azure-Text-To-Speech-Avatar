@@ -11,13 +11,21 @@
     <!-- Link to external JavaScript files -->
     <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
     <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+
+    <!-- Include Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 
-<!-- Logo and Title -->
-<div class="logo-title-container">
+<!-- Logo and Questions Buttons -->
+<div class="logo-container">
   <img src="{{ url_for('static', filename='image/logo.png') }}" alt="Logo" class="logo">
-  <h1>Avatar Demo</h1>
+</div>
+
+<div class="question-buttons">
+    <button onclick="handleQuestion(1)" class="question-button">Question 1</button>
+    <button onclick="handleQuestion(2)" class="question-button">Question 2</button>
+    <button onclick="handleQuestion(3)" class="question-button">Question 3</button>
 </div>
 
 <!-- This hidden input stores the required variables, either passed from the backend Flask app or hidden -->
@@ -27,25 +35,37 @@
 <input type="checkbox" id="autoReconnectAvatar" checked style="display: none;">
 <input type="checkbox" id="useLocalVideoForIdle" style="display: none;">
 
-<!-- Buttons for controlling avatar session and microphone interaction -->
-<div class="button-container">
-  <button id="startSession" onclick="window.startSession()">Open Avatar Session</button>
-  <button id="microphone" onclick="window.microphone()" disabled>Start Microphone</button>
-  <button id="stopSpeaking" onclick="stopSpeaking()" disabled>Stop Speaking</button>
-  <button id="clearChatHistory" onclick="window.clearChatHistory()">Clear Chat History</button>
-  <button id="stopSession" onclick="window.stopSession()" disabled>Close Avatar Session</button>
-</div>
-
 <!-- Main Layout for Avatar and Chat -->
 <div class="main-container">
   <!-- Video container that holds both local and remote videos -->
   <div id="videoContainer"> 
+
     <!-- Local video for idle state (hidden initially, and will autoplay when shown) -->
     <div id="localVideo" hidden>
       <video src="{{ url_for('static', filename='video/lisa-casual-sitting-idle.mp4') }}" autoplay loop muted></video>
     </div>
+
     <!-- Remote video feed -->
     <div id="remoteVideo"></div>
+
+    <!-- Buttons for controlling avatar session and microphone interaction -->
+    <div class="button-container">
+      <button id="startSession" class="icon-button" onclick="window.startSession()">
+        <i class="fas fa-play-circle"></i>
+      </button>
+      <button id="microphone" class="icon-button" onclick="window.microphone()" disabled>
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button id="stopSpeaking" class="icon-button" onclick="stopSpeaking()" disabled>
+        <i class="fas fa-stop-circle"></i>
+      </button>
+      <button id="clearChatHistory" class="icon-button" onclick="window.clearChatHistory()">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+      <button id="stopSession" class="icon-button" onclick="window.stopSession()" disabled>
+        <i class="fas fa-times-circle"></i>
+      </button>
+    </div>
   </div>
 
   <!-- Chat History and Message Box (Right Side) -->
@@ -59,6 +79,6 @@
       <input type="checkbox" id="showTypeMessage" onchange="window.updateTypeMessageBox()"> Type Message</input><br />
     </div>
     <!-- Type Message Box -->
-    <textarea id="userMessageBox" rows="3"></textarea>
+    <textarea id="userMessageBox" rows="3" placeholder="Type a message..."></textarea>
   </div>
 </div>

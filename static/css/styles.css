@@ -10,56 +10,71 @@ body {
     min-height: 100vh;
 }
 
-/* Styling for the Logo and Title Container */
-.logo-title-container {
+
+/* Logo Container */
+.logo-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between; /* Keep logo on the left, title in the center */
+    justify-content: flex-start;
     width: 100%;
-    padding: 20px;
-    margin-left: 20px;
+    padding: 10px 0px;
 }
 
-/* Styling for the Logo */
+/* Logo */
 .logo {
-    width: 200px;
+    width: 150px;
     height: auto;
-    margin-left: 20px;
+    margin-right: 20px;
 }
 
-/* Title Styling */
-h1 {
-    font-size: 2rem;
-    color: #222222;
-    margin: 0 auto;
+/* Style for the question buttons */
+.question-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.question-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.question-button:hover {
+    background-color: #45a049;
 }
 
 /* Button Container */
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 12px; /* Space between buttons */
+    gap: 12px;
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
-/* Button Styling */
-button {
-    background-color: #5C2D91; /* Primary Color */
+.icon-button {
+    background-color: #6200EA;
     color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    padding: 12px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #32145A; /* Darker variant for hover */
+.icon-button:hover {
+    background-color: #3700B3;
 }
 
-button:disabled {
-    background-color: #737373;
+.icon-button[disabled] {
+    background-color: #ccc;
     cursor: not-allowed;
 }
 
@@ -80,25 +95,30 @@ button:disabled {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    height: 505px;
+    height: 600px; /* Increased height */
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #remoteVideo video {
     width: 100%;
     object-fit: contain;
-    max-height: 500px;
+    height: 100%;
+    max-height: 500px; /* Max height for avatar */
 }
 
 /* Chat History Styling */
 #chatHistory {
     background-color: #FFFFFF;
+    font-family: 'Segoe UI';
     border: 1px solid #D7D7DF;
     padding: 10px;
     font-size: 1rem;
     color: #222222;
     border-radius: 5px;
-    height: 400px; /* Height for chat history */
+    height: 480px; /* Height for chat history */
     overflow-y: auto; /* Make it scrollable */
     width: 100%;
     max-width: 100%;
@@ -115,6 +135,7 @@ button:disabled {
 /* Type Message Box */
 #userMessageBox {
     font-size: 1rem;
+    font-family: 'Segoe UI';
     padding: 10px;
     width: 100%;
     border-radius: 5px;

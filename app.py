@@ -59,12 +59,13 @@ video_crop = "False"
 # Avatar Voice Configuration
 tts_voice = os.environ.get('TTS_VOICE')
 custom_voice_endpoint = os.environ.get('CUSTOM_VOICE_ENDPOINT') # optional
-personal_voice_speaker_profile = os.environ.get('PERSONAL_VOICE_SPEAKER_PROFILE') # optional
+personal_voice_speaker_profile_id = os.environ.get('PERSONAL_VOICE_SPEAKER_PROFILE') # optional
 
 # Constant variables
 sentence_level_punctuations = [ '.', '?', '!', ':', ';', '。', '?', '!', ':', ';' ] # Punctuations that indicate the end of a sentence
 enable_quick_reply = False # Enable quick reply for certain chat models which take longer time to respond
 quick_replies = [ 'Let me take a look.', 'Let me check.', 'One moment, please.' ] # Quick reply reponses
+oyd_doc_regex = re.compile(r'\[doc(\d+)\]') # Regex to match the OYD (on-your-data) document reference
 
 # Global variables
 client_contexts = {} # Client contexts
@@ -118,7 +119,7 @@ def connectAvatar() -> Response:
     client_context['cognitive_search_index_name'] = cognitive_search_index_name
     client_context['tts_voice'] = tts_voice
     client_context['custom_voice_endpoint_id'] = custom_voice_endpoint
-    client_context['personal_voice_speaker_profile_id'] = personal_voice_speaker_profile
+    client_context['personal_voice_speaker_profile_id'] = personal_voice_speaker_profile_id
 
     custom_voice_endpoint_id = client_context['custom_voice_endpoint_id']
 
@@ -309,7 +310,6 @@ def refreshSpeechToken() -> None:
 def initializeChatContext(system_prompt: str, client_id: uuid.UUID) -> None:
     global client_contexts
     client_context = client_contexts[client_id]
-    cognitive_search_index_name = client_context['cognitive_search_index_name']
     messages = client_context['messages']
     data_sources = client_context['data_sources']
 
@@ -357,7 +357,6 @@ def handleUserQuery(user_query: str, client_id: uuid.UUID):
 
     global client_contexts
     client_context = client_contexts[client_id]
-    azure_openai_deployment_name = client_context['azure_openai_deployment_name']
     messages = client_context['messages']
     data_sources = client_context['data_sources']
 
@@ -394,6 +393,8 @@ def handleUserQuery(user_query: str, client_id: uuid.UUID):
                     print(f"AOAI first token latency: {first_token_latency_ms}ms")
                     yield f"<FTL>{first_token_latency_ms}</FTL>"
                     is_first_chunk = False
+                if oyd_doc_regex.search(response_token):
+                    response_token = oyd_doc_regex.sub('', response_token).strip()                
                 yield response_token # yield response token to client as display text
                 assistant_reply += response_token  # build up the assistant message
                 if response_token == '\n' or response_token == '\n\n':
@@ -448,8 +449,8 @@ def speakWithQueue(text: str, ending_silence_ms: int, client_id: uuid.UUID) -> N
             nonlocal client_context
             nonlocal spoken_text_queue
             nonlocal ending_silence_ms
-            tts_voice = client_context['tts_voice']
-            personal_voice_speaker_profile_id = client_context['personal_voice_speaker_profile_id']
+            # tts_voice = client_context['tts_voice']
+            # personal_voice_speaker_profile_id = client_context['personal_voice_speaker_profile_id']
             client_context['is_speaking'] = True
             while len(spoken_text_queue) > 0:
                 text = spoken_text_queue.pop(0)
