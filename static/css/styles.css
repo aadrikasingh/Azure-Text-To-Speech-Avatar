@@ -109,7 +109,7 @@ canvas {
 
 /* Style adjustments for icons and buttons */
 .icon-button {
-    background-color: #6200EA;
+    background-color: #3E66BA;
     color: white;
     border: none;
     border-radius: 12px;
@@ -127,7 +127,7 @@ canvas {
 
 /* Button hover effect */
 .icon-button:hover {
-    background-color: #3700B3;
+    background-color: #28a745;
     transform: scale(1.1); /* Slight zoom on hover */
 }
 
