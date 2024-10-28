@@ -244,6 +244,9 @@ function connectToAvatarService(peerConnection) {
             response.text().then(text => {
                 const remoteSdp = text
                 peerConnection.setRemoteDescription(new RTCSessionDescription(JSON.parse(atob(remoteSdp))))
+                .then(() => {
+                    sendGreetingMessage();
+                });
             })
         } else {
             document.getElementById('startSession').disabled = false;
@@ -251,6 +254,28 @@ function connectToAvatarService(peerConnection) {
             throw new Error(`Failed connecting to the Avatar service: ${response.status} ${response.statusText}`)
         }
     })
+}
+
+// Function to send a greeting message
+function sendGreetingMessage() {
+    const greetingText = `Hi, my name is Sara. How can I help you today?`;
+    let ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='en-US'><voice name='en-US-JennyMultilingualV2Neural'><mstts:leadingsilence-exact value='0'/>${greetingText}</voice></speak>`;
+    
+    fetch('/api/speak', {
+        method: 'POST',
+        headers: {
+            'ClientId': clientId,
+            'Content-Type': 'application/ssml+xml'
+        },
+        body: ssml
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Greeting message sent successfully.');
+        } else {
+            console.error('Failed to send greeting message.');
+        }
+    });
 }
 
 // Handle user query. Send user query to the chat API and display the response.
@@ -445,93 +470,98 @@ window.clearChatHistory = () => {
 }
 
 window.microphone = () => {
-    if (document.getElementById('microphone').innerHTML === 'Stop Microphone') {
+    let microphoneButton = document.getElementById('microphone');
+    let microphoneIcon = microphoneButton.querySelector('i');
+
+    if (microphoneIcon.classList.contains('fa-microphone-slash')) {
         // Stop microphone
-        document.getElementById('microphone').disabled = true
+        microphoneButton.disabled = true;
         speechRecognizer.stopContinuousRecognitionAsync(
             () => {
-                document.getElementById('microphone').innerHTML = 'Start Microphone'
-                document.getElementById('microphone').disabled = false
+                microphoneIcon.classList.remove('fa-microphone-slash');
+                microphoneIcon.classList.add('fa-microphone');
+                microphoneButton.disabled = false;
             }, (err) => {
-                console.log("Failed to stop continuous recognition:", err)
-                document.getElementById('microphone').disabled = false
-            })
-
-        return
+                console.log("Failed to stop continuous recognition:", err);
+                microphoneButton.disabled = false;
+            });
+        return;
     }
 
     if (document.getElementById('useLocalVideoForIdle').checked) {
         if (!sessionActive) {
-            connectAvatar()
+            connectAvatar();
         }
 
         setTimeout(() => {
-            document.getElementById('audioPlayer').play()
-        }, 5000)
+            document.getElementById('audioPlayer').play();
+        }, 5000);
     } else {
-        document.getElementById('audioPlayer').play()
+        document.getElementById('audioPlayer').play();
     }
 
-    document.getElementById('microphone').disabled = true
+    microphoneButton.disabled = true;
     speechRecognizer.recognizing = async (s, e) => {
         if (isFirstRecognizingEvent && isSpeaking) {
-            window.stopSpeaking()
-            isFirstRecognizingEvent = false
+            window.stopSpeaking();
+            isFirstRecognizingEvent = false;
         }
-    }
+    };
 
     speechRecognizer.recognized = async (s, e) => {
         if (e.result.reason === SpeechSDK.ResultReason.RecognizedSpeech) {
-            let userQuery = e.result.text.trim()
+            let userQuery = e.result.text.trim();
             if (userQuery === '') {
-                return
+                return;
             }
 
-            let recognitionResultReceivedTime = new Date()
-            let speechFinishedOffset = (e.result.offset + e.result.duration) / 10000
-            let sttLatency = recognitionResultReceivedTime - recognitionStartedTime - speechFinishedOffset
-            console.log(`STT latency: ${sttLatency} ms`)
-            let latencyLogTextArea = document.getElementById('latencyLog')
-            latencyLogTextArea.innerHTML += `STT latency: ${sttLatency} ms\n`
-            latencyLogTextArea.scrollTop = latencyLogTextArea.scrollHeight
+            let recognitionResultReceivedTime = new Date();
+            let speechFinishedOffset = (e.result.offset + e.result.duration) / 10000;
+            let sttLatency = recognitionResultReceivedTime - recognitionStartedTime - speechFinishedOffset;
+            console.log(`STT latency: ${sttLatency} ms`);
+            let latencyLogTextArea = document.getElementById('latencyLog');
+            latencyLogTextArea.innerHTML += `STT latency: ${sttLatency} ms\n`;
+            latencyLogTextArea.scrollTop = latencyLogTextArea.scrollHeight;
 
             // Auto stop microphone when a phrase is recognized, when it's not continuous conversation mode
             if (!document.getElementById('continuousConversation').checked) {
-                document.getElementById('microphone').disabled = true
+                microphoneButton.disabled = true;
                 speechRecognizer.stopContinuousRecognitionAsync(
                     () => {
-                        document.getElementById('microphone').innerHTML = 'Start Microphone'
-                        document.getElementById('microphone').disabled = false
+                        microphoneIcon.classList.remove('fa-microphone-slash');
+                        microphoneIcon.classList.add('fa-microphone');
+                        microphoneButton.disabled = false;
                     }, (err) => {
-                        console.log("Failed to stop continuous recognition:", err)
-                        document.getElementById('microphone').disabled = false
-                    })
+                        console.log("Failed to stop continuous recognition:", err);
+                        microphoneButton.disabled = false;
+                    });
             }
 
-            let chatHistoryTextArea = document.getElementById('chatHistory')
+            let chatHistoryTextArea = document.getElementById('chatHistory');
             if (chatHistoryTextArea.innerHTML !== '' && !chatHistoryTextArea.innerHTML.endsWith('\n\n')) {
-                chatHistoryTextArea.innerHTML += '\n\n'
+                chatHistoryTextArea.innerHTML += '\n\n';
             }
 
-            chatHistoryTextArea.innerHTML += "User: " + userQuery + '\n\n'
-            chatHistoryTextArea.scrollTop = chatHistoryTextArea.scrollHeight
+            chatHistoryTextArea.innerHTML += "User: " + userQuery + '\n\n';
+            chatHistoryTextArea.scrollTop = chatHistoryTextArea.scrollHeight;
 
-            handleUserQuery(userQuery)
+            handleUserQuery(userQuery);
 
-            isFirstRecognizingEvent = true
+            isFirstRecognizingEvent = true;
         }
-    }
+    };
 
-    recognitionStartedTime = new Date()
+    recognitionStartedTime = new Date();
     speechRecognizer.startContinuousRecognitionAsync(
         () => {
-            document.getElementById('microphone').innerHTML = 'Stop Microphone'
-            document.getElementById('microphone').disabled = false
+            microphoneIcon.classList.remove('fa-microphone');
+            microphoneIcon.classList.add('fa-microphone-slash');
+            microphoneButton.disabled = false;
         }, (err) => {
-            console.log("Failed to start continuous recognition:", err)
-            document.getElementById('microphone').disabled = false
-        })
-}
+            console.log("Failed to start continuous recognition:", err);
+            microphoneButton.disabled = false;
+        });
+};
 
 window.toggleChat = () => {
     const chatBox = document.getElementById("chat-box");

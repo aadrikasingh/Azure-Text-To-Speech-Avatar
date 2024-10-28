@@ -33,7 +33,7 @@ user_assigned_managed_identity_client_id = os.environ.get('USER_ASSIGNED_MANAGED
 azure_openai_endpoint = os.environ.get('AZURE_OPENAI_ENDPOINT')
 azure_openai_api_key = os.environ.get('AZURE_OPENAI_API_KEY')
 azure_openai_deployment_name = os.environ.get('AZURE_OPENAI_DEPLOYMENT_NAME')
-azure_openai_system_prompt = "You are an AI assistant named Lisa that helps people find information. Always provide concise answers, not longer than 100 words."
+azure_openai_system_prompt = "You are an AI assistant named Sara that helps people find information. Always provide concise answers, not longer than 100 words."
 
 # Cognitive search resource (optional, only required for 'on your data' scenario)
 cognitive_search_endpoint = os.environ.get('COGNITIVE_SEARCH_ENDPOINT')
@@ -82,6 +82,10 @@ def index():
 @app.route("/chat", methods=["GET"])
 def chatView():
     return render_template("index.html", client_id=initializeClient(), stt_locales="en-US")
+
+@app.route("/portrait", methods=["GET"])
+def portraitView():
+    return render_template("portrait.html", client_id=initializeClient(), stt_locales="en-US")
 
 # The API route to get the speech token
 @app.route("/api/getSpeechToken", methods=["GET"])
