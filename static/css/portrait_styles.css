@@ -1,0 +1,178 @@
+/* General Body Styling */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #1E1E1EFF;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main Container without max-width */
+.main-container {
+    width: 100%;
+    height: 100vh;
+    aspect-ratio: 9 / 16; /* Enforce 9:16 aspect ratio */
+    background-color: #1E1E1E;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Avatar Block */
+.avatar-block {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Remote Video Container */
+#remoteVideo {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    position: relative;
+}
+
+/* Video Elements */
+#remoteVideo video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Canvas Elements */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Control Buttons */
+.record-card {
+    position: absolute;
+    bottom: 20px; /* Adjusted for larger screen */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    box-shadow: none;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 2vw; /* Scales gap with viewport width */
+}
+
+.icon-button {
+    background-color: #3E66BA;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 2vw;    /* Scales with viewport width */
+    cursor: pointer;
+    font-size: 3vw;  /* Scales icon size with viewport width */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.icon-button:hover {
+    background-color: #28a745;
+    transform: scale(1.05);
+}
+
+.icon-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Chat Box Styling */
+#chat-box {
+    position: fixed;
+    bottom: 150px;  /* Adjusted for larger screen */
+    right: 40px;    /* Adjusted for larger screen */
+    width: 600px;   /* Increased width */
+    height: 800px;  /* Increased height */
+    background-color: #1E1E1E;
+    border-radius: 12px;
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Chat History */
+#chatHistory {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 24px; /* Increased font size */
+    color: #E0E0E0;
+    background-color: #2C2C2C;
+    resize: none;
+}
+
+/* Scrollbar Styling */
+#chatHistory::-webkit-scrollbar {
+    width: 16px; /* Increased scrollbar width */
+}
+
+#chatHistory::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+}
+
+#chatHistory::-webkit-scrollbar-track {
+    background-color: #2C2C2C;
+}
+
+/* Checkbox Container */
+#showTypeMessageCheckbox {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #1E1E1E;
+    color: #E0E0E0;
+    font-size: 24px; /* Increased font size */
+}
+
+/* User Message Box */
+#userMessageBox {
+    padding: 20px;
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 24px; /* Increased font size */
+    color: #E0E0E0;
+    background-color: #2C2C2C;
+    border-radius: 0 0 10px 10px;
+}
+
+/* User Message Box Focus */
+#userMessageBox:focus {
+    background-color: #333;
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.2);
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none !important;
+}
+
+#latencyLog {
+    display: none;
+}
