@@ -51,7 +51,7 @@ avatar_character = os.environ.get('AVATAR_CHARACTER')
 avatar_style = os.environ.get('AVATAR_STYLE')
 is_custom_avatar = os.environ.get('IS_CUSTOM_AVATAR')
 
-background_color = "#FFFFFF"
+background_color = "#1E1E1EFF"
 background_image_url = None
 transparent_background = "False"
 video_crop = "False"
