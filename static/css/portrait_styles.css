@@ -12,12 +12,13 @@ body {
 }
 
 /* Main Container without max-width */
+/* Main Container */
 .main-container {
+    position: relative; /* Establishes a new stacking context */
     width: 100%;
     height: 100vh;
-    aspect-ratio: 9 / 16; /* Enforce 9:16 aspect ratio */
+    aspect-ratio: 9 / 16;
     background-color: #1E1E1E;
-    position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -26,46 +27,43 @@ body {
 
 /* Avatar Block */
 .avatar-block {
+    position: relative; /* Positioning context for children */
     width: 100%;
     height: 100%;
-    position: relative;
     overflow: hidden;
 }
 
-/* Remote Video Container */
-#remoteVideo {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    position: relative;
-}
-
-/* Video Elements */
-#remoteVideo video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Canvas Elements */
-canvas {
-    position: absolute;
+/* Background Image */
+#backgroundImage {
+    position: absolute; /* Absolutely positioned within avatar-block */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: 1; /* Lowest z-index to be at the back */
+}
+
+/* Remote Video and Canvas Elements */
+#remoteVideo, canvas {
+    position: absolute; /* Stack on top of background image */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Higher z-index than background */
 }
 
 /* Control Buttons */
 .record-card {
-    position: absolute;
-    bottom: 20px; /* Adjusted for larger screen */
+    position: absolute; /* Position relative to main-container */
+    bottom: 20px;
     width: 100%;
     display: flex;
     justify-content: center;
     background: transparent;
     box-shadow: none;
+    z-index: 3; /* Highest z-index to appear on top */
 }
 
 .button-container {

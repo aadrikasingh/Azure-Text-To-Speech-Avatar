@@ -51,8 +51,8 @@ avatar_character = os.environ.get('AVATAR_CHARACTER')
 avatar_style = os.environ.get('AVATAR_STYLE')
 is_custom_avatar = os.environ.get('IS_CUSTOM_AVATAR')
 
-background_color = "#1E1E1EFF"
-background_image_url = None
+background_color = '#00000000'
+background_image_url = 'https://github.com/Valentina-Alto/Azure-Text-To-Speech-Avatar-background/blob/main/static/image/background.png?raw=true'
 transparent_background = "False"
 video_crop = "False"
 
@@ -184,7 +184,8 @@ def connectAvatar() -> Response:
                         'background': {
                             'color': '#00FF00FF' if transparent_background.lower() == 'true' else background_color,
                             'image': {
-                                'url': background_image_url
+                                'url': background_image_url,
+                                'fillMode': 'Fit'
                             }
                         }
                     }
