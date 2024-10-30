@@ -13,6 +13,7 @@ var lastSpeakTime
 var isFirstRecognizingEvent = true
 var firstTokenLatencyRegex = new RegExp(/<FTL>(\d+)<\/FTL>/)
 var firstSentenceLatencyRegex = new RegExp(/<FSL>(\d+)<\/FSL>/)
+var previousAnimationFrameTimestamp = 0;
 
 // Connect to avatar service
 function connectAvatar() {
@@ -133,11 +134,18 @@ function setupWebRTC(iceServerUrl, iceServerUsername, iceServerCredential) {
             videoElement.onplaying = () => {
                 // Clean up existing video element if there is any
                 remoteVideoDiv = document.getElementById('remoteVideo')
+                canvas = document.getElementById('canvas')
+                remoteVideoDiv.style.width = '0.1px'
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+                canvas.hidden = false
+
                 for (var i = 0; i < remoteVideoDiv.childNodes.length; i++) {
                     if (remoteVideoDiv.childNodes[i].localName === event.track.kind) {
                         remoteVideoDiv.removeChild(remoteVideoDiv.childNodes[i])
                     }
                 }
+
+                window.requestAnimationFrame(makeBackgroundTransparent)
 
                 // Append the new video element
                 document.getElementById('remoteVideo').appendChild(videoElement)
@@ -145,7 +153,6 @@ function setupWebRTC(iceServerUrl, iceServerUsername, iceServerCredential) {
                 console.log(`WebRTC ${event.track.kind} channel connected.`)
                 document.getElementById('microphone').disabled = false
                 document.getElementById('stopSession').disabled = false
-                document.getElementById('remoteVideo').style.width = '960px'
                 document.getElementById('chatHistory').hidden = false
                 document.getElementById('latencyLog').hidden = false
                 document.getElementById('showTypeMessage').disabled = false
@@ -388,6 +395,32 @@ function checkHung() {
             }
         }, 2000)
     }
+}
+
+function makeBackgroundTransparent(timestamp) {
+    if (!previousAnimationFrameTimestamp || timestamp - previousAnimationFrameTimestamp > 33) {
+        const video = document.getElementById('videoPlayer');
+        const canvas = document.getElementById('canvas');
+        if (video && canvas && video.videoWidth > 0 && video.videoHeight > 0) {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+            let frame = context.getImageData(0, 0, video.videoWidth, video.videoHeight);
+            for (let i = 0; i < frame.data.length; i += 4) {
+                let r = frame.data[i];
+                let g = frame.data[i + 1];
+                let b = frame.data[i + 2];
+                // Adjust these values to better match your green screen's color and lighting
+                if (g > 150 && g > r * 1.2 && g > b * 1.2) { // More precise green detection
+                    frame.data[i + 3] = 0; // Set alpha to make pixel transparent
+                } else if (g > 100 && g > r * 1.1 && g > b * 1.1) { // Soften edges by reducing alpha instead of fully transparent
+                    frame.data[i + 3] = frame.data[i + 3] * 0.5;
+                }
+            }
+            context.putImageData(frame, 0, 0);
+        }
+        previousAnimationFrameTimestamp = timestamp;
+    }
+    window.requestAnimationFrame(makeBackgroundTransparent);
 }
 
 window.onload = () => {

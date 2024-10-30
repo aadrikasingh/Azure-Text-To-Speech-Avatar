@@ -53,7 +53,7 @@ is_custom_avatar = os.environ.get('IS_CUSTOM_AVATAR')
 
 background_color = "#1E1E1EFF"
 background_image_url = None
-transparent_background = "False"
+transparent_background = "True"
 video_crop = "False"
 
 # Avatar Voice Configuration
@@ -181,8 +181,9 @@ def connectAvatar() -> Response:
                         'customized': is_custom_avatar.lower() == 'true',
                         'character': avatar_character,
                         'style': avatar_style,
+                        # #00B140FF - chroma green, #009D57FF - television green, #0C8918FF - digital TV green
                         'background': {
-                            'color': '#00FF00FF' if transparent_background.lower() == 'true' else background_color,
+                            'color': '#00B140FF' if transparent_background.lower() == 'true' else background_color,
                             'image': {
                                 'url': background_image_url
                             }
