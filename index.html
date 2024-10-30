@@ -28,7 +28,6 @@
   <div class="avatar-block">
     <div id="remoteVideo"></div>
     <canvas id="canvas" width="1080" height="720" style="background-color: transparent;" hidden="hidden"></canvas>
-    <canvas id="tmpCanvas" width="1080" height="720" hidden="hidden"></canvas>
     
     <fluent-card class="record-card">
       <div class="button-container">
@@ -58,10 +57,11 @@
     <textarea id="chatHistory"></textarea>
     <textarea id="latencyLog" hidden></textarea>
     <div id="showTypeMessageCheckbox">
-      <input type="checkbox" id="showTypeMessage" onchange="window.updateTypeMessageBox()">Type Message</input><br />
+      <input type="checkbox" id="showTypeMessage" checked style="display: none;"></input><br />
     </div>
     <textarea id="userMessageBox" rows="3" placeholder="Type a message..." hidden></textarea>
   </div>
 
 </body>
+
 </html>

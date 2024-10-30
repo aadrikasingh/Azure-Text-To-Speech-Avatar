@@ -136,7 +136,6 @@ function setupWebRTC(iceServerUrl, iceServerUsername, iceServerCredential) {
                 remoteVideoDiv = document.getElementById('remoteVideo')
                 canvas = document.getElementById('canvas')
                 remoteVideoDiv.style.width = '0.1px'
-                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
                 canvas.hidden = false
 
                 for (var i = 0; i < remoteVideoDiv.childNodes.length; i++) {
@@ -397,11 +396,20 @@ function checkHung() {
     }
 }
 
+function checkAndExecute() {
+    var checkbox = document.getElementById('showTypeMessage');
+    if (checkbox.checked) {
+      window.updateTypeMessageBox();
+    }
+  }
+
 function makeBackgroundTransparent(timestamp) {
     if (!previousAnimationFrameTimestamp || timestamp - previousAnimationFrameTimestamp > 33) {
         const video = document.getElementById('videoPlayer');
         const canvas = document.getElementById('canvas');
         if (video && canvas && video.videoWidth > 0 && video.videoHeight > 0) {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
             let frame = context.getImageData(0, 0, video.videoWidth, video.videoHeight);
@@ -428,6 +436,7 @@ window.onload = () => {
     setInterval(() => {
         checkHung()
     }, 2000) // Check session activity every 2 seconds
+    checkAndExecute()
 }
 
 window.startSession = () => {
