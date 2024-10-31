@@ -1,4 +1,4 @@
-/* General Body Styling */
+/* General Body Styling*/
 body {
     font-family: 'Segoe UI', sans-serif;
     background-image: url("../image/portrait.png");
@@ -8,44 +8,42 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
     height: 100vh;
-    overflow: hidden;
+    overflow: hidden; /* Adjust if necessary to handle overflow */
+    position: relative; /* Allow for overlay positioning */
+}
+
+.avatar-block {
+    flex: 1;
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    width: 200%; /* Full width */
+    height: 100%; /* Full height of the viewport */
     position: relative;
+    overflow: hidden; /* Prevent overflow */
+    z-index: 2;
 }
 
 video {
     background: #222;
     margin: 0 0 20px 0;
-    --height: 100%;
-    height: var(--height);
-    width: calc(var(--height) * 0.75);
-}
-
-.avatar-block {
-    display: flex;
-    flex-direction: column; /* Maintain column layout */
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* Use full width */
-    height: auto; /* Set to auto for flexibility */
-    min-height: 80vh; /* Minimum height to make avatar larger */
-    position: relative;
-    overflow: hidden;
-    z-index: 2;
+    --width: 100%;
+    width: var(--width);
+    height: calc(var(--width) * 0.75);
 }
 
 canvas {
-    position: absolute;
+    position: absolute;  /* Position it absolutely within its positioned container */
     bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 100%; /* Full height of the avatar block */
-    object-fit: cover;
-    background-color: transparent;
-    display: block;
-    z-index: 3;
+    width: 100%; /* Fill the width of its container */
+    height: 100%; /* Adjust height to maintain the aspect ratio */
+    object-fit: fill; /* Cover the entire area of the canvas without being cut off */
+    background-color: transparent; /* Maintain a transparent background if necessary */
+    display: block; /* Ensure the canvas is displayed */
+    z-index: 3; /* Positioned correctly within the stacking context */
 }
 
 #remoteVideo {
@@ -107,7 +105,7 @@ canvas {
     bottom: 80px;
     right: 20px;
     width: 30%; /* Adjusted for better fit in portrait */
-    height: 20%; /* Dynamic height adjustment */
+    height: 40%; /* Dynamic height adjustment */
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
