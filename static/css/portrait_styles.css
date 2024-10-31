@@ -15,6 +15,17 @@ body {
     position: relative; /* Allow for overlay positioning */
 }
 
+/* body::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+} */
+
 .avatar-block {
     flex: 1;
     display: flex;
@@ -105,7 +116,7 @@ canvas {
     bottom: 80px;
     right: 20px;
     width: 30%; /* Adjusted for better fit in portrait */
-    height: 40%; /* Dynamic height adjustment */
+    height: 25%; /* Dynamic height adjustment */
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 12px;
@@ -166,17 +177,6 @@ canvas {
     .avatar-block {
         width: 100%;
     }
-}
-
-body::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
 }
 
 /* Hidden Elements */
