@@ -53,6 +53,10 @@ canvas {
     }
 }
 
+#remoteVideo {
+    display: none;
+}
+
 /* Add background overlay for better readability */
 body::after {
     content: "";
