@@ -1,7 +1,7 @@
 /* General Body Styling*/
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-image: url("../image/landscape.png");
+    background-image: var(--background-image);
     background-repeat: no-repeat;
     background-size: cover;
     margin: 0;
@@ -94,8 +94,8 @@ body::after {
 }
 
 .icon-button {
-    background-color: #3E66BA;
-    color: white;
+    background-color: var(--button-color);
+    color: var(--button-icon-color);
     border: none;
     border-radius: 15px;
     padding: 14px;
@@ -111,7 +111,7 @@ body::after {
 }
 
 .icon-button:hover {
-    background-color: #28a745;
+    background-color: var(--button-hover-color);
     transform: scale(1.1);
 }
 
@@ -142,7 +142,7 @@ body::after {
 
 #chatHistory, #userMessageBox {
     background-color: transparent; /* Make background transparent */
-    color: #EEE; /* Light text color for readability */
+    color: var(--chat-color);
     padding: 10px; /* Padding for spacing */
     margin: 2px 0; /* Space between elements */
     border: none; /* Remove borders */

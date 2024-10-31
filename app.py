@@ -61,6 +61,20 @@ tts_voice = os.environ.get('TTS_VOICE')
 custom_voice_endpoint = os.environ.get('CUSTOM_VOICE_ENDPOINT') # optional
 personal_voice_speaker_profile_id = os.environ.get('PERSONAL_VOICE_SPEAKER_PROFILE') # optional
 
+# CSS Variables (Landscape)
+webpage_background_landscape = os.environ.get('WEBPAGE_BACKGROUND_LANDSCAPE')
+webpage_chat_fontcolor_landscape = os.environ.get('WEBPAGE_CHAT_FONTCOLOR_LANDSCAPE')
+button_color_landscape = os.environ.get('BUTTON_COLOR_LANDSCAPE')
+button_hover_color_landscape = os.environ.get('BUTTON_HOVER_LANDSCAPE')
+button_icon_color_landscape = os.environ.get('BUTTON_ICON_COLOR_LANDSCAPE')
+
+# CSS Variables (Portrait)
+webpage_background_portrait = os.environ.get('WEBPAGE_BACKGROUND_PORTRAIT')
+webpage_chat_fontcolor_portrait = os.environ.get('WEBPAGE_CHAT_FONTCOLOR_PORTRAIT')
+button_color_portrait = os.environ.get('BUTTON_COLOR_PORTRAIT')
+button_hover_color_portrait = os.environ.get('BUTTON_HOVER_PORTRAIT')
+button_icon_color_portrait = os.environ.get('BUTTON_ICON_COLOR_PORTRAIT')
+
 # Constant variables
 sentence_level_punctuations = [ '.', '?', '!', ':', ';', '。', '?', '!', ':', ';' ] # Punctuations that indicate the end of a sentence
 enable_quick_reply = False # Enable quick reply for certain chat models which take longer time to respond
@@ -76,16 +90,16 @@ azure_openai = AzureOpenAI(azure_endpoint=azure_openai_endpoint, api_version='20
 # The default route (index.html)
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US")
+    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US", bg_img=webpage_background_landscape, chat_color=webpage_chat_fontcolor_landscape, button_color=button_color_landscape, button_hover_color=button_hover_color_landscape, button_icon_color=button_icon_color_landscape)
 
 # The chat route (index.html)
 @app.route("/chat", methods=["GET"])
 def chatView():
-    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US")
+    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US", bg_img=webpage_background_landscape, chat_color=webpage_chat_fontcolor_landscape, button_color=button_color_landscape, button_hover_color=button_hover_color_landscape, button_icon_color=button_icon_color_landscape)
 
 @app.route("/portrait", methods=["GET"])
 def portraitView():
-    return render_template("portrait.html", client_id=initializeClient(), stt_locales="en-US")
+    return render_template("portrait.html", client_id=initializeClient(), stt_locales="en-US", bg_img=webpage_background_portrait, chat_color=webpage_chat_fontcolor_portrait, button_color=button_color_portrait, button_hover_color=button_hover_color_portrait, button_icon_color=button_icon_color_portrait)
 
 # The API route to get the speech token
 @app.route("/api/getSpeechToken", methods=["GET"])

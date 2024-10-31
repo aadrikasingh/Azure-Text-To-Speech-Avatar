@@ -1,7 +1,7 @@
 /* General Body Styling*/
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-image: url("../image/portrait.png");
+    background-image: var(--background-image);
     background-repeat: no-repeat;
     background-size: cover;
     margin: 0;
@@ -84,8 +84,8 @@ canvas {
 }
 
 .icon-button {
-    background-color: #3E66BA;
-    color: white;
+    background-color: var(--button-color);
+    color: var(--button-icon-color);
     border: none;
     border-radius: 15px;
     padding: 14px;
@@ -101,7 +101,7 @@ canvas {
 }
 
 .icon-button:hover {
-    background-color: #28a745;
+    background-color: var(--button-hover-color);
     transform: scale(1.1);
 }
 
@@ -131,7 +131,7 @@ canvas {
 
 #chatHistory, #userMessageBox {
     background-color: transparent;
-    color: #EEE;
+    color: var(--chat-color);
     padding: 10px;
     margin: 2px 0;
     border: none;
