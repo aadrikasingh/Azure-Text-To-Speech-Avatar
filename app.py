@@ -80,6 +80,7 @@ sentence_level_punctuations = [ '.', '?', '!', ':', ';', '。', '?', '!', ':', '
 enable_quick_reply = False # Enable quick reply for certain chat models which take longer time to respond
 quick_replies = [ 'Let me take a look.', 'Let me check.', 'One moment, please.' ] # Quick reply reponses
 oyd_doc_regex = re.compile(r'\[doc(\d+)\]') # Regex to match the OYD (on-your-data) document reference
+symbol_regex = re.compile(r'[#*_`]')
 
 # Global variables
 client_contexts = {} # Client contexts
@@ -398,6 +399,8 @@ def handleUserQuery(user_query: str, client_id: uuid.UUID):
         model=azure_openai_deployment_name,
         messages=messages,
         extra_body={ 'data_sources' : data_sources } if len(data_sources) > 0 else None,
+        max_tokens = 150,
+        temperature = 0,
         stream=True)
 
     is_first_chunk = True
@@ -413,7 +416,9 @@ def handleUserQuery(user_query: str, client_id: uuid.UUID):
                     yield f"<FTL>{first_token_latency_ms}</FTL>"
                     is_first_chunk = False
                 if oyd_doc_regex.search(response_token):
-                    response_token = oyd_doc_regex.sub('', response_token).strip()                
+                    response_token = oyd_doc_regex.sub('', response_token).strip()
+                if symbol_regex.search(response_token):
+                    response_token = symbol_regex.sub('', response_token).strip()                
                 yield response_token # yield response token to client as display text
                 assistant_reply += response_token  # build up the assistant message
                 if response_token == '\n' or response_token == '\n\n':
