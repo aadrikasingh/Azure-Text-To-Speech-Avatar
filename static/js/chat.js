@@ -413,22 +413,49 @@ function makeBackgroundTransparent(timestamp) {
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
             let frame = context.getImageData(0, 0, video.videoWidth, video.videoHeight);
+            
             for (let i = 0; i < frame.data.length; i += 4) {
                 let r = frame.data[i];
                 let g = frame.data[i + 1];
                 let b = frame.data[i + 2];
-                // Adjust these values to better match your green screen's color and lighting
-                if (g > 150 && g > r * 1.2 && g > b * 1.2) { // More precise green detection
-                    frame.data[i + 3] = 0; // Set alpha to make pixel transparent
-                } else if (g > 100 && g > r * 1.1 && g > b * 1.1) { // Soften edges by reducing alpha instead of fully transparent
-                    frame.data[i + 3] = frame.data[i + 3] * 0.5;
+                let alpha = frame.data[i + 3];
+
+                // More sensitive green detection
+                if (g > 140 && g > r * 1.2 && g > b * 1.2) {
+                    frame.data[i + 3] = 0; // Set alpha to fully transparent
+                } 
+                // Softer edge detection
+                else if (g > 90 && g > r * 1.1 && g > b * 1.1) {
+                    frame.data[i + 3] = alpha * 0.3; // Partially transparent
+                }
+
+                // Reduce green spill
+                if (alpha > 0 && g > r * 1.1 && g > b * 1.1) {
+                    frame.data[i + 1] = g * 0.8; // Reduce green component
                 }
             }
+
             context.putImageData(frame, 0, 0);
+
+            // Soften edges after initial processing
+            softenEdges(context, video.videoWidth, video.videoHeight);
         }
         previousAnimationFrameTimestamp = timestamp;
     }
     window.requestAnimationFrame(makeBackgroundTransparent);
+}
+
+function softenEdges(context, width, height) {
+    let edgePixels = context.getImageData(0, 0, width, height);
+
+    for (let i = 0; i < edgePixels.data.length; i += 4) {
+        let alpha = edgePixels.data[i + 3];
+        if (alpha > 0 && alpha < 255) {
+            edgePixels.data[i + 3] = Math.min(alpha + 20, 255); // Increase alpha to soften edges
+        }
+    }
+
+    context.putImageData(edgePixels, 0, 0);
 }
 
 window.onload = () => {
