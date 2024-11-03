@@ -51,9 +51,9 @@ avatar_character = os.environ.get('AVATAR_CHARACTER')
 avatar_style = os.environ.get('AVATAR_STYLE')
 is_custom_avatar = os.environ.get('IS_CUSTOM_AVATAR')
 
-background_color = "#1E1E1EFF"
+background_color = os.environ.get('WEBPAGE_BACKGROUND_PORTRAIT')
 background_image_url = None
-transparent_background = "True"
+transparent_background = "False"
 video_crop = "False"
 
 # Avatar Voice Configuration
@@ -91,16 +91,16 @@ azure_openai = AzureOpenAI(azure_endpoint=azure_openai_endpoint, api_version='20
 # The default route (index.html)
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US", bg_img=webpage_background_landscape, chat_color=webpage_chat_fontcolor_landscape, button_color=button_color_landscape, button_hover_color=button_hover_color_landscape, button_icon_color=button_icon_color_landscape)
+    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US", bg_color=webpage_background_landscape, chat_color=webpage_chat_fontcolor_landscape, button_color=button_color_landscape, button_hover_color=button_hover_color_landscape, button_icon_color=button_icon_color_landscape)
 
 # The chat route (index.html)
 @app.route("/chat", methods=["GET"])
 def chatView():
-    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US", bg_img=webpage_background_landscape, chat_color=webpage_chat_fontcolor_landscape, button_color=button_color_landscape, button_hover_color=button_hover_color_landscape, button_icon_color=button_icon_color_landscape)
+    return render_template("index.html", client_id=initializeClient(), stt_locales="en-US", bg_color=webpage_background_landscape, chat_color=webpage_chat_fontcolor_landscape, button_color=button_color_landscape, button_hover_color=button_hover_color_landscape, button_icon_color=button_icon_color_landscape)
 
 @app.route("/portrait", methods=["GET"])
 def portraitView():
-    return render_template("portrait.html", client_id=initializeClient(), stt_locales="en-US", bg_img=webpage_background_portrait, chat_color=webpage_chat_fontcolor_portrait, button_color=button_color_portrait, button_hover_color=button_hover_color_portrait, button_icon_color=button_icon_color_portrait)
+    return render_template("portrait.html", client_id=initializeClient(), stt_locales="en-US", bg_color=webpage_background_portrait, chat_color=webpage_chat_fontcolor_portrait, button_color=button_color_portrait, button_hover_color=button_hover_color_portrait, button_icon_color=button_icon_color_portrait)
 
 # The API route to get the speech token
 @app.route("/api/getSpeechToken", methods=["GET"])

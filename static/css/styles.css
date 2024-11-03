@@ -1,9 +1,7 @@
 /* General Body Styling*/
 body {
     font-family: 'Segoe UI', sans-serif;
-    background-image: var(--background-image);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
     display: flex;
@@ -54,20 +52,26 @@ canvas {
 }
 
 #remoteVideo {
-    display: none;
+    position: absolute;  /* Position it absolutely within its positioned container */
+    bottom: 0;
+    width: 100%; /* Fill the width of its container */
+    height: auto; /* Adjust height to maintain the aspect ratio */
+    object-fit: cover; /* Cover the entire area of the canvas without being cut off */
+    display: block; /* Ensure the canvas is displayed */
+    z-index: 3;
 }
 
 /* Add background overlay for better readability */
-body::after {
+/* body::after {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.05); /* Dark overlay */
-    z-index: 1; /* Below content but above the background */
-}
+    background: rgba(255, 255, 255, 0.05);
+    z-index: 1;
+} */
 
 /* Fixed position for the record card with control buttons */
 .record-card {

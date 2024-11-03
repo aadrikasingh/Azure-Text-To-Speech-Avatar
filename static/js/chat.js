@@ -134,9 +134,9 @@ function setupWebRTC(iceServerUrl, iceServerUsername, iceServerCredential) {
             videoElement.onplaying = () => {
                 // Clean up existing video element if there is any
                 remoteVideoDiv = document.getElementById('remoteVideo')
-                canvas = document.getElementById('canvas')
-                remoteVideoDiv.style.width = '0.1px'
-                canvas.hidden = false
+                // canvas = document.getElementById('canvas')
+                // remoteVideoDiv.style.width = '0.1px'
+                // canvas.hidden = false
 
                 for (var i = 0; i < remoteVideoDiv.childNodes.length; i++) {
                     if (remoteVideoDiv.childNodes[i].localName === event.track.kind) {
@@ -144,7 +144,7 @@ function setupWebRTC(iceServerUrl, iceServerUsername, iceServerCredential) {
                     }
                 }
 
-                window.requestAnimationFrame(makeBackgroundTransparent)
+                // window.requestAnimationFrame(makeBackgroundTransparent)
 
                 // Append the new video element
                 document.getElementById('remoteVideo').appendChild(videoElement)
