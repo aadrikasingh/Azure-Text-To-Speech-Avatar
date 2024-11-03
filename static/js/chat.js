@@ -411,51 +411,83 @@ function makeBackgroundTransparent(timestamp) {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             const context = canvas.getContext('2d');
+
+            // Clear the canvas
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the video frame onto the canvas
             context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
             let frame = context.getImageData(0, 0, video.videoWidth, video.videoHeight);
-            
+
+            // Process each pixel
             for (let i = 0; i < frame.data.length; i += 4) {
                 let r = frame.data[i];
                 let g = frame.data[i + 1];
                 let b = frame.data[i + 2];
                 let alpha = frame.data[i + 3];
 
-                // More sensitive green detection
-                if (g > 140 && g > r * 1.2 && g > b * 1.2) {
-                    frame.data[i + 3] = 0; // Set alpha to fully transparent
+                // Strict green detection for transparency
+                if (g > 100 && g > r * 1.6 && g > b * 1.6) {
+                    frame.data[i + 3] = 0; // Fully transparent for dominant green
                 } 
-                // Softer edge detection
-                else if (g > 90 && g > r * 1.1 && g > b * 1.1) {
-                    frame.data[i + 3] = alpha * 0.3; // Partially transparent
+                // Soften edge pixels
+                else if (g > 80 && g > r * 1.4 && g > b * 1.4) {
+                    frame.data[i + 3] = alpha * 0.1; // Partially transparent for soft edges
                 }
 
-                // Reduce green spill
-                if (alpha > 0 && g > r * 1.1 && g > b * 1.1) {
-                    frame.data[i + 1] = g * 0.8; // Reduce green component
+                // Green spill reduction
+                if (alpha > 0 && g > r * 1.2 && g > b * 1.2) {
+                    let adjustment = (g - Math.max(r, b)) / 2;
+                    frame.data[i] = Math.min(255, r + adjustment * 1.0); // Boost red
+                    frame.data[i + 1] = Math.max(0, g - adjustment * 2.0); // Reduce green
+                    frame.data[i + 2] = Math.min(255, b + adjustment * 1.0); // Boost blue
                 }
             }
 
             context.putImageData(frame, 0, 0);
 
-            // Soften edges after initial processing
-            softenEdges(context, video.videoWidth, video.videoHeight);
+            // Apply edge-specific smoothing
+            smoothEdges(context, canvas.width, canvas.height);
         }
         previousAnimationFrameTimestamp = timestamp;
     }
     window.requestAnimationFrame(makeBackgroundTransparent);
 }
 
-function softenEdges(context, width, height) {
-    let edgePixels = context.getImageData(0, 0, width, height);
+function smoothEdges(context, width, height) {
+    let frame = context.getImageData(0, 0, width, height);
+    let data = frame.data;
+    
+    for (let i = 0; i < data.length; i += 4) {
+        let alpha = data[i + 3];
 
-    for (let i = 0; i < edgePixels.data.length; i += 4) {
-        let alpha = edgePixels.data[i + 3];
+        // Only apply smoothing to semi-transparent pixels
         if (alpha > 0 && alpha < 255) {
-            edgePixels.data[i + 3] = Math.min(alpha + 20, 255); // Increase alpha to soften edges
+            let surroundingAlpha = getSurroundingAlphaAverage(data, i, width);
+            // Smooth the alpha value by blending it with the surrounding pixels' alpha
+            data[i + 3] = (alpha + surroundingAlpha) / 2;
         }
     }
 
-    context.putImageData(edgePixels, 0, 0);
+    context.putImageData(frame, 0, 0);
+}
+
+function getSurroundingAlphaAverage(data, index, width) {
+    let totalAlpha = 0;
+    let count = 0;
+
+    // Check surrounding pixels in a 3x3 grid
+    for (let y = -1; y <= 1; y++) {
+        for (let x = -1; x <= 1; x++) {
+            let neighborIndex = index + (y * width * 4) + (x * 4);
+            if (neighborIndex >= 0 && neighborIndex < data.length) {
+                totalAlpha += data[neighborIndex + 3];
+                count++;
+            }
+        }
+    }
+
+    return totalAlpha / count; // Average the alpha values of surrounding pixels
 }
 
 window.onload = () => {

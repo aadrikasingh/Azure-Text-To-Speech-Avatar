@@ -198,7 +198,7 @@ def connectAvatar() -> Response:
                         'style': avatar_style,
                         # #00B140FF - chroma green, #009D57FF - television green, #0C8918FF - digital TV green
                         'background': {
-                            'color': '#00B140FF' if transparent_background.lower() == 'true' else background_color,
+                            'color': '#00640080' if transparent_background.lower() == 'true' else background_color,
                             'image': {
                                 'url': background_image_url
                             }
