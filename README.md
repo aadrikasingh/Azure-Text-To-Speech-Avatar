@@ -1,41 +1,159 @@
-# Instructions to run Microsoft Azure TTS Talking Avatar sample code
+# Transforming Digital Interactions with Hyper-Realistic Custom Avatars and Custom Neural Voices
+
+This innovative solution combines Azure Text-to-Speech Custom Avatar Real-time API service and Custom Neural Voices to deliver hyper-realistic avatars with lifelike expressions and movements. Paired with advanced AI capabilities, these avatars enable seamless, human-like interactions tailored to diverse applications, from customer support to educational tools. By leveraging Retrieval Augmented Generation (RAG) using Azure OpenAI and Azure AI Search, the system ensures precise, contextually aware responses, redefining the way we engage and communicate in the digital age.
+
+---
 
 ## Pre-requisites
 
-* Follow [Text to speech quickstart](https://learn.microsoft.com/azure/ai-services/speech-service/get-started-text-to-speech?pivots=programming-language-python#set-up-the-environment) to set up the environment for running Speech SDK in python.
+Ensure the following Azure services are deployed before running this project:
 
-## Chat Sample
+1. **Azure Speech Service**:
+   - For Text-to-Speech (TTS) and Speech-to-Text (STT) functionalities.
+2. **Azure OpenAI Service**:
+   - For natural language response generation using GPT models.
+3. **Azure AI Search Service**: _(optional, if using your own data)_
+   - For contextual data retrieval using the "Bring Your Own Data" feature of Azure OpenAI.
+   - You can follow the instructions [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/use-your-data-quickstart?tabs=command-line%2Cjavascript-keyless%2Ctypescript-keyless%2Cpython-new&pivots=programming-language-studio).
+4. **Azure Storage Account**: _(optional, if using your own data)_
+   - To store customer-provided data for the search service.
 
-This sample demonstrates the chat scenario, with integration of Azure speech-to-text, Azure OpenAI, and Azure text-to-speech avatar real-time API.
+---
 
-* Step 1: Open a console and navigate to the folder containing this README.md document.
-    * Run `pip install -r requirements.txt` to install the required packages.
-    * Set below environment variables:
-        * `SPEECH_REGION` - the region of your Azure speech resource, e.g. westus2.
-        * `SPEECH_KEY` - the API key of your Azure speech resource.
-        * `SPEECH_PRIVATE_ENDPOINT` - the private endpoint of your Azure speech resource. e.g. https://my-speech-service.cognitiveservices.azure.com. This is optional, and only needed when you want to use private endpoint to access Azure speech service. This is optional, which is only needed when you are using custom endpoint. For more information about private endpoint, please refer to [Enable private endpoint](https://learn.microsoft.com/azure/ai-services/speech-service/speech-services-private-link).
-        * `SPEECH_RESOURCE_URL` - the URL of your Azure speech resource, e.g. /subscriptions/6e83d8b7-00dd-4b0a-9e98-dab9f060418b/resourceGroups/my-resource-group/providers/Microsoft.CognitiveServices/accounts/my-speech-resource. To fetch the speech resource URL, go to your speech resource overview page on Azure portal, click `JSON View` link, and then copy the `Resource ID` value on the popped up page. This is optional, which is only needed when you want to use private endpoint to access Azure speech service.
-        * `USER_ASSIGNED_MANAGED_IDENTITY_CLIENT_ID` - the client ID of your user-assigned managed identity. This is optional, which is only needed when you want to use private endpoint with user-assigned managed identity to access Azure speech service. For more information about user-assigned managed identity, please refer to [Use a user-assigned managed identity](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token?tabs=azure-cli).
-        * `AZURE_OPENAI_ENDPOINT` - the endpoint of your Azure OpenAI resource, e.g. https://my-aoai.openai.azure.com/, which can be found in the `Keys and Endpoint` section of your Azure OpenAI resource in Azure portal.
-        * `AZURE_OPENAI_API_KEY` - the API key of your Azure OpenAI resource, which can be found in the `Keys and Endpoint` section of your Azure OpenAI resource in Azure portal.
-        * `AZURE_OPENAI_DEPLOYMENT_NAME` - the name of your Azure OpenAI model deployment, which can be found in the `Model deployments` section of your Azure OpenAI resource in Azure portal.
-    * Set below environment variables if you want to use customized ICE server:
-        * `ICE_SERVER_URL` - the URL of your customized ICE server.
-        * `ICE_SERVER_URL_REMOTE` - the URL of your customized ICE server for remote side. This is only required when the ICE address for remote side is different from local side.
-        * `ICE_SERVER_USERNAME` - the username of your customized ICE server.
-        * `ICE_SERVER_PASSWORD` - the password of your customized ICE server.
-    * Run `python -m flask run -h 0.0.0.0 -p 5000` to start this sample.
+## Setup Instructions
 
-* Step 2: Open a browser and navigate to `http://localhost:5000/chat` to view the web UI of this sample.
+### Step 1: Clone the Repository
+Clone the repository to your local environment:
 
-* Step 3: Click `Open Avatar Session` button to setup video connection with Azure TTS Talking Avatar service. If everything goes well, you should see a live video with an avatar being shown on the web page.
+```
+git clone https://github.com/aadrikasingh/Azure-Text-To-Speech-Avatar.git
+cd Azure-Text-To-Speech-Avatar
+```
 
-* Step 5: Click `Start Microphone` button to start microphone (make sure to allow the microphone access tip box popping up in the browser), and then you can start chatting with the avatar with speech. The chat history (the text of what you said, and the response text by the Azure OpenAI chat API) will be shown beside the avatar. The avatar will then speak out the response of the chat API.
+### Step 2: Install Dependencies
+Install required Python packages using:
 
-# Additional Tip(s)
+```
+pip install -r requirements.txt
+```
 
-* If you want to enforce the avatar to stop speaking before the avatar finishes the utterance, you can click `Stop Speaking` button. This is useful when you want to interrupt the avatar speaking.
+### Step 3: Configure Environment Variables
+Create a `.env` file in the project root and set the following environment variables:
 
-* If you want to clear the chat history and start a new round of chat, you can click `Clear Chat History` button. And if you want to stop the avatar service, please click `Close Avatar Session` button to close the connection with avatar service.
+**(Please ensure you begin with the `.env.sample` template)**
 
-* If you want to type your query message instead of speaking, you can check the `Type Message` checkbox, and then type your query message in the text box showing up below the checkbox.
+#### Azure Speech Configuration
+```
+SPEECH_REGION = "<Azure Speech Region, e.g. westus2>"
+SPEECH_KEY = "<Azure Speech API Key>"
+```
+
+#### Avatar Configuration
+```
+AVATAR_CHARACTER="<Avatar Character Name>"
+AVATAR_STYLE="<Avatar Style>"
+IS_CUSTOM_AVATAR="<True/False>"
+```
+
+#### Neural Voice Configuration
+```
+TTS_VOICE="<Name of the TTS voice>"
+CUSTOM_VOICE_ENDPOINT="<Optional: Endpoint for your Custom Neural Voice>"
+PERSONAL_VOICE_SPEAKER_PROFILE="<Optional: Speaker profile ID for Personal Neural Voice>"
+```
+
+#### Azure OpenAI Configuration
+```
+AZURE_OPENAI_ENDPOINT="<Azure OpenAI Endpoint>"
+AZURE_OPENAI_API_KEY="<Azure OpenAI API Key>"
+AZURE_OPENAI_DEPLOYMENT_NAME="<Deployment Name>"
+AZURE_OPENAI_SYSTEM_PROMPT="<System Prompt - update as needed>
+```
+
+#### Azure AI Search Configuration (Optional)
+```
+COGNITIVE_SEARCH_ENDPOINT="<Azure AI Search Endpoint>"
+COGNITIVE_SEARCH_API_KEY="<Azure Search API Key>"
+COGNITIVE_SEARCH_INDEX_NAME="<Search Index Name>"
+```
+
+#### Webpage Customization
+For customizing the UI:
+```
+WEBPAGE_BACKGROUND_LANDSCAPE="<URL to Landscape Background>"
+WEBPAGE_CHAT_FONTCOLOR_LANDSCAPE="#EEE"
+BUTTON_COLOR_LANDSCAPE="#3E66BA"
+BUTTON_HOVER_LANDSCAPE="#28a745"
+
+WEBPAGE_BACKGROUND_PORTRAIT="<URL to Portrait Background>"
+WEBPAGE_CHAT_FONTCOLOR_PORTRAIT="#EEE"
+BUTTON_COLOR_PORTRAIT="#3E66BA"
+BUTTON_HOVER_PORTRAIT="#28a745"
+```
+
+#### Set the welcome message
+Please change line 267 & 268 in static/js/chat.js file
+    
+---    
+
+## Running the Application
+
+1. **Start the Flask Application**:
+
+   Run the following command to launch the web app:
+   ```
+   python -m flask run -h 0.0.0.0 -p 5000
+   ```
+
+2. **Access the Web Interface (Landscape Orientation)**:
+
+   Open your browser and navigate to:
+   ```
+   http://localhost:5000/chat
+   ```
+
+3. **Access the Web Interface (Portrait Orientation)**:
+
+   Open your browser and navigate to:
+   ```
+   http://localhost:5000/portrait
+   ```
+
+4. **Initialize the Avatar Session**:
+   - Click the first button **(Start Avatar Session)** to establish a connection with Azure TTS Avatar services.
+   - If successful, you will see a live avatar video.
+
+4. **Interact with the Avatar**:
+   - Click the second button **(Start Microphone)** to enable speech input (ensure you allow microphone access in your browser).
+   - Speak or type queries (with the **Chat** button)
+   - The avatar will respond with synchronized audio and video.
+
+---
+
+## Additional Features
+
+- **Interrupt Speech**:
+  Use the **"Stop Speaking"** button to halt the avatar mid-sentence.
+
+- **Clear Chat History**:
+  Reset the session by clicking the **"Clear Chat History"** button.
+
+- **Close Avatar Session**:
+  End the avatar interaction with the **"Close Avatar Session"** button.
+
+---
+
+## Screenshots
+
+### Landscape Mode
+![Landscape Mode](https://github.com/aadrikasingh/Azure-Text-To-Speech-Avatar/blob/main/assets/landscape.png?raw=true)
+
+### Portrait Mode
+![Portrait Mode](https://github.com/aadrikasingh/Azure-Text-To-Speech-Avatar/blob/main/assets/portrait.png?raw=true)
+
+---
+
+## Adaptation
+This implementation is adapted from the sample tutorial code provided by Microsoft. For more details, refer to the [original tutorial](https://github.com/Azure-Samples/cognitive-services-speech-sdk/tree/master/samples/js/browser/avatar).
+
+---

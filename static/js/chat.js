@@ -264,8 +264,8 @@ function connectToAvatarService(peerConnection) {
 
 // Function to send a greeting message
 function sendGreetingMessage() {
-    const greetingText = `Hi, my name is Sara. How can I help you today?`;
-    let ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='en-US'><voice name='en-US-JennyMultilingualV2Neural'><mstts:leadingsilence-exact value='0'/>${greetingText}</voice></speak>`;
+    const greetingText = `Hi, my name is Lisa. How can I help you today?`;
+    let ssml = `<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xmlns:mstts='http://www.w3.org/2001/mstts' xml:lang='en-US'><voice name='en-US-NovaTurboMultilingualNeural'><mstts:leadingsilence-exact value='0'/>${greetingText}</voice></speak>`;
     
     fetch('/api/speak', {
         method: 'POST',
